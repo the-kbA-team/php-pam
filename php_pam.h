@@ -15,17 +15,40 @@
   | Authors: Mikael Johansson <mikael AT synd DOT info>                  |
   |          Chad Cunningham                                             |
   +----------------------------------------------------------------------+
-*/
+ */
 
 /* $Id: php_pam.h 291417 2009-11-29 10:49:27Z mikl $ */
 
 #ifndef PHP_PAM_H
-#define PHP_PAM_H
+#define PHP_PAM_H 1
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <php.h>
+#include <php_ini.h>
+#include <SAPI.h>
+#ifdef ZTS
+#include "TSRM.h"
+#endif
+#include <ext/standard/info.h>
+#include <ext/standard/base64.h>
+#include <ext/standard/basic_functions.h>
+#include <ext/standard/php_var.h>
+#include <ext/standard/php_smart_string.h>
+#include <Zend/zend_extensions.h>
+#include <Zend/zend_hash.h>
+#include <Zend/zend_interfaces.h>
+#include <Zend/zend_smart_str.h>
+
+#include <security/pam_appl.h>
+
+#define PHP_PAM_EXTENSION_VERSION "1.0.4"
+#define PHP_PAM_EXTENSION_NAME "pam"
 
 extern zend_module_entry pam_module_entry;
 #define phpext_pam_ptr &pam_module_entry
-
-#define PHP_PAM_VERSION "1.0.3"
 
 #ifdef PHP_WIN32
 #define PHP_PAM_API __declspec(dllexport)
@@ -34,36 +57,26 @@ extern zend_module_entry pam_module_entry;
 #endif
 
 #ifdef ZTS
-#include "TSRM.h"
-#endif
-
-PHP_MINIT_FUNCTION(pam);
-PHP_MSHUTDOWN_FUNCTION(pam);
-PHP_MINFO_FUNCTION(pam);
-
-PHP_FUNCTION(pam_auth);
-PHP_FUNCTION(pam_chpass);
-
-ZEND_BEGIN_MODULE_GLOBALS(pam)
-	char *servicename;
-ZEND_END_MODULE_GLOBALS(pam)
-
-typedef struct {
-	char *name, *pw;
-} pam_auth_t;
-
-typedef struct {
-	char *name, *oldpw, *newpw;
-	int count;
-} pam_chpass_t;
-
-#ifdef ZTS
 #define PAM_G(v) TSRMG(pam_globals_id, zend_pam_globals *, v)
 #else
 #define PAM_G(v) (pam_globals.v)
-#endif
+#endif  
 
-#endif	/* PHP_PAM_H */
+ZEND_BEGIN_MODULE_GLOBALS(pam)
+const char *servicename;
+ZEND_END_MODULE_GLOBALS(pam)
+ZEND_EXTERN_MODULE_GLOBALS(pam)
+
+typedef struct {
+  char *name, *pw;
+} pam_auth_t;
+
+typedef struct {
+  char *name, *oldpw, *newpw;
+  int count;
+} pam_chpass_t;
+
+#endif /* PHP_PAM_H */
 
 /*
  * Local variables:
