@@ -255,6 +255,7 @@ PHP_FUNCTION(pam_auth) {
       spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_start");
       zval_dtor(status);
       ZVAL_STRING(status, error_msg);
+      efree(error_msg);
     }
     RETURN_FALSE;
   }
@@ -275,6 +276,7 @@ PHP_FUNCTION(pam_auth) {
       spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_authenticate");
       zval_dtor(status);
       ZVAL_STRING(status, error_msg);
+      efree(error_msg);
     }
     pam_end(pamh, PAM_SUCCESS);
     RETURN_FALSE;
@@ -286,6 +288,7 @@ PHP_FUNCTION(pam_auth) {
         spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_acct_mgmt");
         zval_dtor(status);
         ZVAL_STRING(status, error_msg);
+        efree(error_msg);
       }
       pam_end(pamh, PAM_SUCCESS);
       RETURN_FALSE;
@@ -327,6 +330,7 @@ PHP_FUNCTION(pam_chpass) {
       spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_start");
       zval_dtor(status);
       ZVAL_STRING(status, error_msg);
+      efree(error_msg);
     }
     RETURN_FALSE;
   }
@@ -336,6 +340,7 @@ PHP_FUNCTION(pam_chpass) {
       spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_authenticate");
       zval_dtor(status);
       ZVAL_STRING(status, error_msg);
+      efree(error_msg);
     }
     pam_end(pamh, PAM_SUCCESS);
     RETURN_FALSE;
@@ -346,6 +351,7 @@ PHP_FUNCTION(pam_chpass) {
       spprintf(&error_msg, 0, "%s (in %s)", (char *) pam_strerror(pamh, result), "pam_chauthtok");
       zval_dtor(status);
       ZVAL_STRING(status, error_msg);
+      efree(error_msg);
     }
     pam_end(pamh, PAM_SUCCESS);
     RETURN_FALSE;
