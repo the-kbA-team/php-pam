@@ -261,13 +261,11 @@ PHP_FUNCTION(pam_auth) {
   }
   hash_key = zend_string_init("_SERVER", sizeof ( "_SERVER"), 0);
   if (zend_hash_exists(&EG(symbol_table), hash_key)) {
-    server = zend_hash_find_ind(&EG(symbol_table), hash_key);
-    if (server != NULL) {
-      hash_key = zend_string_init("REMOTE_ADDR", sizeof ( "REMOTE_ADDR"), 0);
-      remote_addr = zend_hash_find_ind(Z_ARRVAL_P(server), hash_key);
-      if (remote_addr != NULL && Z_TYPE_P(remote_addr)) {
-        pam_set_item(pamh, PAM_RHOST, Z_STRVAL_P(remote_addr));
-      }
+    if ((server = zend_hash_str_find(&EG(symbol_table), "_SERVER", sizeof("_SERVER")-1)) != NULL && Z_TYPE_P(server) == IS_ARRAY
+    ) {
+        if ((remote_addr = zend_hash_str_find(Z_ARRVAL_P(server), "REMOTE_ADDR", sizeof("REMOTE_ADDR")-1)) != NULL && Z_TYPE_P(remote_addr) == IS_STRING) {
+            pam_set_item(pamh, PAM_RHOST, Z_STRVAL_P(remote_addr));
+        }
     }
   }
 
