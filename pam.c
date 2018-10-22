@@ -319,7 +319,6 @@ PHP_FUNCTION(pam_chpass) {
   if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sss|z", &username, &username_len, &oldpass, &oldpass_len, &newpass, &newpass_len, &status) == FAILURE) {
     return;
   }
-  RETURN_STRINGL(oldpass, oldpass_len);
 
   userinfo.name = username;
   userinfo.oldpw = oldpass;
