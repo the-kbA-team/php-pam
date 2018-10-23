@@ -15,7 +15,7 @@
   | Authors: Mikael Johansson <mikael AT synd DOT info>                  |
   |          Chad Cunningham                                             |
   +----------------------------------------------------------------------+
- */
+*/
 
 /* $Id: php_pam.h 291417 2009-11-29 10:49:27Z mikl $ */
 
@@ -63,17 +63,17 @@ extern zend_module_entry pam_module_entry;
 #endif  
 
 ZEND_BEGIN_MODULE_GLOBALS(pam)
-const char *servicename;
+	const char *servicename;
 ZEND_END_MODULE_GLOBALS(pam)
 ZEND_EXTERN_MODULE_GLOBALS(pam)
 
 typedef struct {
-  char *name, *pw;
+	char *name, *pw;
 } pam_auth_t;
 
 typedef struct {
-  char *name, *oldpw, *newpw;
-  int count;
+	char *name, *oldpw, *newpw;
+	int count;
 } pam_chpass_t;
 
 #endif /* PHP_PAM_H */
